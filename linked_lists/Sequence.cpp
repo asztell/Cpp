@@ -247,15 +247,35 @@ int Sequence::find(const ItemType& value) const
 
 void Sequence::swap(Sequence& other)
 {
-
+	// cout<<"  swap(): "<<endl;
+	// cout<<"this->head == "<<this->head<<endl;
+	// cout<<"other.head == "<<other.head<<endl;
+	Node* temp = head;
+//	cout<<"after 'Node* temp = head' temp == "<<temp<<endl;
+	head = other.head;
+//	cout<<"after 'head = other.head' head == "<<head<<endl;
+	other.head = temp;
+//	cout<<"after 'other.head = temp' other.head == "<<other.head<<endl;
 }
 
-void interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result)
+void Sequence::interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result)
 {
+	cout<<"seq1.head == "<<seq1.head<<endl;
+	Node* s1 = seq1.head;
+	Node* s2 = seq2.head;
+	Node* res = result.head;
+	Node* temp;
+	Node* smaller;
+
+	if (seq1.m_len >= seq2.m_len)
+		smaller = s2;
+	else
+		smaller = s1;
 
 }
 
-int subsequence(const Sequence& seq1, const Sequence& seq2)
+int Sequence::subsequence(const Sequence& seq1, const Sequence& seq2)
 {
 	return 0;
 }
+

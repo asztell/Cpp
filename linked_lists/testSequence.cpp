@@ -38,6 +38,8 @@ int main()
 	assert(a.get(2, x));
 	unsigned long y = 69;
 	assert(b.set(2, y));
+	assert(b.find(7)==1);
+	a.swap(b);
 //	cout << "a.size() == " << a.size() << endl;
 	return 0;
 }
