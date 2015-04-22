@@ -96,27 +96,18 @@ bool Sequence::insert(int pos, const ItemType& value)
 
 bool Sequence::insert(const ItemType& value)
 {
-//	cout <<endl<< "==   insert()   ==" << endl;
 	Node* p = head->m_prev;		// assign head to p
 	Node* newNode = new Node;	// create new Node
 	newNode->m_data = value;	// give it value
-//	cout<<"newNode->m_data == "<<newNode->m_data<<endl;
 	
 	newNode->m_prev = head->m_prev;// last pointer to new's prev
 	newNode->m_next = head;		// head to new's next
-	// cout<<"newNode->m_prev == "<<newNode->m_prev<<endl;
-	// cout<<"newNode->m_next == "<<newNode->m_next<<endl;
-	// cout<<"head->m_prev == "<<head->m_prev<<endl;
-	// cout<<"head == "<<head<<endl;
 
 	p->m_next = newNode;
 	head->m_prev = newNode;
-	// cout<<"p->m_next == "<<p->m_next<<endl;
-	// cout<<"newNode == "<<newNode<<endl;
-	// cout<<"head->m_prev == "<<head->m_prev<<endl;
-//	cout<<""<<endl;
+
 	m_len++;
-	//beware of empty and one-element list!!!!
+
 	return true;
 }
 
@@ -124,7 +115,6 @@ bool Sequence::erase(int pos)
 {
 	if ( (size() != 0) && (pos >= 1) && (pos <= size()) )
 	{
-//		cout<<"  erase()"<<endl<<endl;
 		Node* p = head->m_next;
 
 		for (int i = 1; i < pos; i++)
@@ -179,14 +169,12 @@ bool Sequence::get(int pos, ItemType& value) const
 {
 	if ( (size() != 0) && (pos >= 1) && (pos <= size()) )
 	{
-//		cout<<"  get()"<<endl<<endl;
 		Node* p = head->m_next;
 
 		for (int i = 1; i < pos; i++)
 		{
 			p = p->m_next;
 		}
-//		cout<<"value == "<<value<<endl;
 		value = p->m_data;
 
 		return true;
@@ -199,15 +187,12 @@ bool Sequence::set(int pos, const ItemType& value)
 {
 	if ( (size() != 0) && (pos >= 1) && (pos <= size()) )
 	{
-//		cout<<"  set()"<<endl<<endl;
-//		cout<<"value == "<<value<<endl;
 		Node* p = head->m_next;
 
 		for (int i = 1; i < pos; i++)
 		{
 			p = p->m_next;
 		}
-//		cout<<"value == "<<value<<endl;
 		p->m_data = value;
 
 		return true;
@@ -218,8 +203,6 @@ bool Sequence::set(int pos, const ItemType& value)
 
 int Sequence::find(const ItemType& value) const
 {
-//	cout<<"  find(): "<<endl;
-//	cout<<"		value == "<<value<<endl;
 	if (size() != 0)
 	{
 		Node* p = head->m_next;
@@ -229,31 +212,29 @@ int Sequence::find(const ItemType& value) const
 		{
 			if (p->m_data == value)
 			{
-//				cout<<"  find(): end"<<endl;
 				return position_counter;
 			}
 			position_counter++;
 		}
 	}
-//	cout<<"  find(): end"<<endl;
+
 	return -1;
 }
 
 void Sequence::swap(Sequence& other)
 {
-//	cout<<"   swap():"<<endl;
 	Node* temp = head;
 	int inttemp = m_len;
+
 	head = other.head;
 	m_len = other.m_len;
+
 	other.m_len = inttemp;
 	other.head = temp;
-//	cout<<"  swap(): end"<<endl;
 }
 
 void interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result)
 {
-//	cout<<"  interleave():"<<endl;
 	Sequence s;
 
 	if (seq1.size() == 0)
@@ -283,25 +264,14 @@ void interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result)
 
 		for (int i = 1; i <= smaller; i++)
 		{
-//			cout<<"seq1.size() == "<<seq1.size()<<endl;
-//			cout<<"seq2.size() == "<<seq2.size()<<endl;
-
 			seq1.get(i, temp_s1);				// i == 1	i == 2
 			seq2.get(i, temp_s2);				// i == 1	i == 2
-//			cout<<"temp_s1 == "<<temp_s1<<endl;
-//			cout<<"temp_s2 == "<<temp_s2<<endl;
-//			cout<<"(2*i)-1 == "<<2*i-1<<endl;
-//			cout<<"(2*i)   == "<<2*i<<endl;
 			s.insert(((2*i)-1), temp_s1);	// i == 1	i == 3	i == 5
 			s.insert((2*i), temp_s2);		// i == 2 	i == 4	i == 6
-//			cout<<"s.size() == "<<s.size()<<endl;
-
 		}
-
 
 		if (seq1.size() > seq2.size())
 		{
-//			cout<<"seq1.size() == "<<seq1.size()<<endl;
 			for (int i = (2*smaller)+1; i <= ((bigger-smaller)+(2*smaller)); i++)
 			{
 				seq1.get(i, temp_s1);
@@ -317,12 +287,8 @@ void interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result)
 			}
 		}
 	}
-//	cout<<"s.size() == "<<s.size()<<endl;
 
 	result = s;
-//	cout<<"result.size() == "<<result.size()<<endl;
-
-//	cout<<"   interleave(): end"<<endl;
 }
 
 int subsequence(const Sequence& seq1, const Sequence& seq2)
