@@ -20,6 +20,7 @@ class Sequence
 {
   public:
     Sequence();
+    Sequence(const Sequence& other);
     ~Sequence();
     Sequence& operator=(const Sequence& other);
     bool empty() const;
@@ -32,8 +33,6 @@ class Sequence
     bool set(int pos, const ItemType& value);
     int find(const ItemType& value) const;
     void swap(Sequence& other);
-    void interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result);
-    int subsequence(const Sequence& seq1, const Sequence& seq2);
   private:
     struct Node
     {
@@ -57,5 +56,9 @@ int Sequence::size() const
 //    cout << "m_len == " << m_len << endl;
     return m_len;
 }
+
+void interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result);
+int subsequence(const Sequence& seq1, const Sequence& seq2);
+
 
 #endif // SEQUENCE_INCLUDED

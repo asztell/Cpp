@@ -40,6 +40,14 @@ int main()
 	assert(b.set(2, y));
 	assert(b.find(7)==1);
 	a.swap(b);
+	Sequence c;
+	c.insert(1);
+	interleave(a, b, c);
+//	assert(c.size() >= 4);
+	cout<<"c.size()"<<c.size()<<endl;
+	b = a;
+	assert(b.size()==3);
+	assert(a.size()==3);
 //	cout << "a.size() == " << a.size() << endl;
 	return 0;
 }

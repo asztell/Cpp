@@ -19,57 +19,51 @@ Sequence::Sequence()
 	head = new Node;
 	head->m_prev = head;
 	head->m_next = head;
-	cout <<endl<< "==   S   ==" <<endl;
+//	cout <<endl<< "==   S   ==" <<endl;
+}
+
+Sequence::Sequence(const Sequence& other)
+:m_len(0)
+{
+	head = new Node;
+	head->m_prev = head;
+	head->m_next = head;
+
+	Node* this_p = head;
+	unsigned long data;
+
+	for (int i = 1; i <= other.size(); i++)
+	{
+		other.get(i, data);
+		insert(i, data);
+//		this_p->m_data = data;
+//		this_p = this_p->m_next;
+	}
 }
 
 Sequence::~Sequence()
 {
-	cout<<"   ~S    "<<endl<<endl;
 	if (size() == 0)
-//		cout<<"size() == 0"<<endl;
-		delete head;
-
-	for (Node* p = head->m_next; p != head; p = p->m_next)
 	{
-		cout << " ~S  for" << endl;
-		// cout<<"head == "<<head<<endl;
-		// cout<<"head->m_next == "<<head->m_next<<endl;
-		// cout<<"p == "<<p<<endl;
-		delete p;
-		// cout<<" after delete p"<<endl;
-		// cout<<"p == "<<p<<endl;
+		delete head;
 	}
-	cout << " ~S  end" <<endl<<endl;
-	delete head;
+	else
+	{
+		for (Node* p = head->m_next; p != head; p = p->m_next)
+		{
+			delete p;
+		}
+
+		delete head;
+	}
 }
 
 Sequence& Sequence::operator=(const Sequence& other)
 {
-	if (this == &other)
+	if (this != &other)
 	{
-		return (*this);
-	}
-
-	if (head != head->m_next)
-	{
-		Node* p = head->m_next;
-
-		while (p != p->m_next)
-		{
-			Node* n = p->m_next;
-			delete p;
-			p = n;
-		}
-	}
-
-	Node* n = other.head;
-
-	while (n != other.head)
-	{
-//		for (int i = 0; i < other->size(); i++)
-//		{
-			;
-//		}
+		Sequence temp(other);
+		swap(temp);
 	}
 
 	return (*this);
@@ -105,7 +99,7 @@ bool Sequence::insert(int pos, const ItemType& value)
 
 bool Sequence::insert(const ItemType& value)
 {
-	cout <<endl<< "==   insert()   ==" << endl;
+//	cout <<endl<< "==   insert()   ==" << endl;
 	Node* p = head->m_prev;		// assign head to p
 	Node* newNode = new Node;	// create new Node
 	newNode->m_data = value;	// give it value
@@ -133,7 +127,7 @@ bool Sequence::erase(int pos)
 {
 	if ( (size() != 0) && (pos >= 1) && (pos <= size()) )
 	{
-		cout<<"  erase()"<<endl<<endl;
+//		cout<<"  erase()"<<endl<<endl;
 		Node* p = head->m_next;
 
 		for (int i = 1; i < pos; i++)
@@ -188,14 +182,14 @@ bool Sequence::get(int pos, ItemType& value) const
 {
 	if ( (size() != 0) && (pos >= 1) && (pos <= size()) )
 	{
-		cout<<"  get()"<<endl<<endl;
+//		cout<<"  get()"<<endl<<endl;
 		Node* p = head->m_next;
 
 		for (int i = 1; i < pos; i++)
 		{
 			p = p->m_next;
 		}
-		cout<<"value == "<<value<<endl;
+//		cout<<"value == "<<value<<endl;
 		value = p->m_data;
 
 		return true;
@@ -208,15 +202,15 @@ bool Sequence::set(int pos, const ItemType& value)
 {
 	if ( (size() != 0) && (pos >= 1) && (pos <= size()) )
 	{
-		cout<<"  set()"<<endl<<endl;
-		cout<<"value == "<<value<<endl;
+//		cout<<"  set()"<<endl<<endl;
+//		cout<<"value == "<<value<<endl;
 		Node* p = head->m_next;
 
 		for (int i = 1; i < pos; i++)
 		{
 			p = p->m_next;
 		}
-		cout<<"value == "<<value<<endl;
+//		cout<<"value == "<<value<<endl;
 		p->m_data = value;
 
 		return true;
@@ -227,6 +221,8 @@ bool Sequence::set(int pos, const ItemType& value)
 
 int Sequence::find(const ItemType& value) const
 {
+//	cout<<"  find(): "<<endl;
+//	cout<<"		value == "<<value<<endl;
 	if (size() != 0)
 	{
 		Node* p = head->m_next;
@@ -236,46 +232,108 @@ int Sequence::find(const ItemType& value) const
 		{
 			if (p->m_data == value)
 			{
+//				cout<<"  find(): end"<<endl;
 				return position_counter;
 			}
 			position_counter++;
 		}
 	}
-
+//	cout<<"  find(): end"<<endl;
 	return -1;
 }
 
 void Sequence::swap(Sequence& other)
 {
-	// cout<<"  swap(): "<<endl;
-	// cout<<"this->head == "<<this->head<<endl;
-	// cout<<"other.head == "<<other.head<<endl;
+//	cout<<"   swap():"<<endl;
 	Node* temp = head;
-//	cout<<"after 'Node* temp = head' temp == "<<temp<<endl;
+	int inttemp = m_len;
 	head = other.head;
-//	cout<<"after 'head = other.head' head == "<<head<<endl;
+	m_len = other.m_len;
+	other.m_len = inttemp;
 	other.head = temp;
-//	cout<<"after 'other.head = temp' other.head == "<<other.head<<endl;
+//	cout<<"  swap(): end"<<endl;
 }
 
-void Sequence::interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result)
+void interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result)
 {
-	cout<<"seq1.head == "<<seq1.head<<endl;
-	Node* s1 = seq1.head;
-	Node* s2 = seq2.head;
-	Node* res = result.head;
-	Node* temp;
-	Node* smaller;
+//	cout<<"  interleave():"<<endl;
+	Sequence s;
 
-	if (seq1.m_len >= seq2.m_len)
-		smaller = s2;
+	if (seq1.size() == 0)
+	{
+		s = seq2;
+	}
+	else if (seq2.size() == 0)
+	{
+		s = seq1;
+	}
 	else
-		smaller = s1;
+	{
+		int smaller;
+		int bigger;
+		unsigned long temp_s1, temp_s2;
 
+		if (seq1.size() >= seq2.size())
+		{
+			smaller = seq2.size();
+			bigger = seq1.size();
+		}
+		else
+		{
+			smaller = seq1.size();
+			bigger = seq2.size();
+		}
+
+		for (int i = 1; i <= smaller; i++)
+		{
+//			cout<<"seq1.size() == "<<seq1.size()<<endl;
+//			cout<<"seq2.size() == "<<seq2.size()<<endl;
+
+			seq1.get(i, temp_s1);				// i == 1	i == 2
+			seq2.get(i, temp_s2);				// i == 1	i == 2
+//			cout<<"temp_s1 == "<<temp_s1<<endl;
+//			cout<<"temp_s2 == "<<temp_s2<<endl;
+//			cout<<"(2*i)-1 == "<<2*i-1<<endl;
+//			cout<<"(2*i)   == "<<2*i<<endl;
+			s.insert(((2*i)-1), temp_s1);	// i == 1	i == 3	i == 5
+			s.insert((2*i), temp_s2);		// i == 2 	i == 4	i == 6
+//			cout<<"s.size() == "<<s.size()<<endl;
+
+		}
+
+
+		if (seq1.size() > seq2.size())
+		{
+//			cout<<"seq1.size() == "<<seq1.size()<<endl;
+			for (int i = (2*smaller)+1; i <= ((bigger-smaller)+(2*smaller)); i++)
+			{
+				seq1.get(i, temp_s1);
+				s.insert(i, temp_s1);
+			}
+		}
+		else if (seq2.size() > seq1.size())
+		{
+			for (int i = (2*smaller)+1; i <= ((bigger-smaller)+(2*smaller)); i++)
+			{
+				seq2.get(i, temp_s2);
+				s.insert(i, temp_s2);
+			}
+		}
+	}
+//	cout<<"s.size() == "<<s.size()<<endl;
+
+	result = s;
+//	cout<<"result.size() == "<<result.size()<<endl;
+
+//	cout<<"   interleave(): end"<<endl;
 }
 
-int Sequence::subsequence(const Sequence& seq1, const Sequence& seq2)
+int subsequence(const Sequence& seq1, const Sequence& seq2)
 {
+	
 	return 0;
 }
+
+
+
 
